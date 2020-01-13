@@ -92,7 +92,6 @@ export async function getSessions(path : string): Promise<{[Key: string]: number
       }
     }
   });
-  console.log(sessions)
   return sessions;
 }
 
