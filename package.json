@@ -1,7 +1,7 @@
 {
   "name": "seratoscratchreader",
   "version": "1.0.0",
-  "description": "Helps parsing serato libraries for node",
+  "description": "Helps parsing serato DJ libraries for node.js based applications.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "files": [
@@ -12,7 +12,14 @@
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json",
     "test": "jest --config jestconfig.json",
-    "parseFile": "ts-node ./src/historyReader.ts"
+
+    "parseFile": "ts-node ./src/historyReader.ts",
+
+    "prepare" : "npm run build",
+    "prepublishOnly" : "npm test && npm run lint",
+    "preversion" : "npm run lint",
+    "version" : "npm run format && git add -A src",
+    "postversion" : "git push && git push --tags"
   },
   "author": "Tobias Jacob",
   "license": "ISC",
@@ -26,5 +33,6 @@
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.7.4"
-  }
+  },
+  "keywords": ["Serato", "DJ", "Scratch", "Live"]
 }

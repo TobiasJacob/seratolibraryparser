@@ -14,11 +14,11 @@ class Chunk {
   }
 }
 
-function getUInt32FromString(s: string) {
+export function getUInt32FromString(s: string) {
   return (s.charCodeAt(0) << 24) + (s.charCodeAt(1) << 16) + (s.charCodeAt(2) << 8) + s.charCodeAt(3);
 }
 
-function getStringFromUInt32(n: number) {
+export function getStringFromUInt32(n: number) {
   return String.fromCharCode(Math.floor(n / (1 << 24)) % 256) + String.fromCharCode(Math.floor(n / (1 << 16)) % 256) + String.fromCharCode(Math.floor(n / (1 << 8)) % 256) + String.fromCharCode(Math.floor(n) % 256);
 }
 
@@ -31,8 +31,12 @@ async function parseChunk(buffer: Buffer, index: number): Promise<{ chunk: Chunk
       data = buffer.toString('utf8', index + 8, index + 8 + length).replace(/\0/g, '');
       break;
     case 'oses':
-      const { chunk, newIndex } = await parseChunk(buffer, index + 8);
-      data = chunk
+      const { chunk : chunkOses } = await parseChunk(buffer, index + 8);
+      data = chunkOses
+      break;
+    case 'oent':
+      const { chunk : chunkOent } = await parseChunk(buffer, index + 8);
+      data = chunkOent
       break;
     case 'adat':
       data = await parseChunkArray(buffer, index + 8, index + 8 + length);
@@ -62,37 +66,66 @@ async function parseChunkArray(buffer: Buffer, start: number, end: number): Prom
   return chunks
 }
 
-async function main(): Promise<void> {
-  const buffer = await fs.promises.readFile('/Users/tobiasjacob/Music/_Serato_/History/history.database');
-
-  if (buffer.readUInt32BE(0) !== getUInt32FromString('vrsn')) {
-    console.error('Buffer vrsn Tag not at Byte 0');
-  }
-
+export async function getSessions(path : string): Promise<{[Key: string]: number}> {
+  const buffer = await fs.promises.readFile(path);
   const chunks = await parseChunkArray(buffer, 0, buffer.length);
-  console.log(chunks[10].data)
 
+  const sessions : {[Key: string]: number} = {}
   chunks.forEach(chunk => {
     if (chunk.tag === 'oses') {
       if (chunk.data instanceof Chunk) {
         if (chunk.data.tag === 'adat') {
           if (Array.isArray(chunk.data.data)) {
-            let date;
-            let index;
+            let date = '';
+            let index = -1;
             chunk.data.data.forEach((subChunk) => {
               if (subChunk.tag === '\u0000\u0000\u0000\u0001') {
-                index = subChunk.data;
+                index = subChunk.data as number;
               }
               if (subChunk.tag === '\u0000\u0000\u0000)') {
-                date = subChunk.data;
+                date = subChunk.data as string;
               }
             })
-            console.log(date, index);
+            sessions[date] = index
           }
         }
       }
     }
   });
+  console.log(sessions)
+  return sessions;
 }
 
-main();
+export async function getSessionSongs(path: string) : Promise<Array<{title: string, artist : string}>> {
+  const buffer = await fs.promises.readFile(path);
+  const chunks = await parseChunkArray(buffer, 0, buffer.length);
+
+  const songs : Array<{title: string, artist : string}> = []
+
+  chunks.forEach(chunk => {
+    if (chunk.tag === 'oent') {
+      if (chunk.data instanceof Chunk) {
+        if (chunk.data.tag === 'adat') {
+          if (Array.isArray(chunk.data.data)) {
+            let title = '';
+            let artist = '';
+            chunk.data.data.forEach((subChunk) => {
+              if (subChunk.tag === '\u0000\u0000\u0000\u0006') {
+                title = subChunk.data as string;
+              }
+              if (subChunk.tag === '\u0000\u0000\u0000\u0007') {
+                artist = subChunk.data as string;
+              }
+            })
+            songs.push({title, artist})
+          }
+        }
+      }
+    }
+  });
+  return songs;
+}
+
+// getSessionSongs('/Users/tobiasjacob/Music/_Serato_/History/Sessions/12.session'); // for testing
+
+// getSessions('/Users/tobiasjacob/Music/_Serato_/History/history.database'); // for testing
