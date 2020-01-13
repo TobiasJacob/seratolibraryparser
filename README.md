@@ -34,7 +34,6 @@ read()
 ```
 
 ## Development
-Git: [https://github.com/TobiasJacob/seratolibraryparser](https://github.com/TobiasJacob/seratolibraryparser)
 
 Feel free to contribute to this package. Clone this repository, run `npm install` and `npm run demo` to get started. Don't forget to adjust the `path` variable. 
 
