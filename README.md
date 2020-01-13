@@ -8,12 +8,13 @@ Install it via
 npm install seratolibraryparser
 ```
 
-Then use it like
+Then adjust path and use it like
 
 ```
 import {getDomTree, getSessions, getSessionSongs} from 'seratolibraryparser'
 
 const path = '/Users/tobiasjacob/Music/_Serato_/History/'
+
 async function read() {
     console.log(await getDomTree(path + 'history.database'))
     const sessions = await getSessions(path + 'history.database')
@@ -28,7 +29,6 @@ async function read() {
 }
 
 read()
-
 ```
 
 ## Development

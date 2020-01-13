@@ -1,6 +1,6 @@
-import {getDomTree, getSessions, getSessionSongs} from './historyReader'
+import { getDomTree, getSessions, getSessionSongs } from "./historyReader";
 
 /**
  * Forwards export functions
  */
-export {getDomTree, getSessions, getSessionSongs};
+export { getDomTree, getSessions, getSessionSongs };
