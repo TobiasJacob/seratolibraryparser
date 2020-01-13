@@ -10,20 +10,22 @@ npm install seratolibraryparser
 
 Then adjust path and use it like
 
-```
+```javascript
 import {getDomTree, getSessions, getSessionSongs} from 'seratolibraryparser'
 
-const path = '/Users/tobiasjacob/Music/_Serato_/History/'
+const path = '/Users/tobiasjacob/Music/_Serato_/History/' // Adjust this path 
 
-async function read() {
-    console.log(await getDomTree(path + 'history.database'))
-    const sessions = await getSessions(path + 'history.database')
+async function read() { // ES6 function to read in all history files of a user
+    const completeDomTree = await getDomTree(path + 'history.database') // Parses a whole dom tree, just for demo purposes, if you want to analyze other tags
+    console.log(completeDomTree) // Displays whole data tree parsed out of serato files
 
-    for (const key in sessions) {
+    const sessions = await getSessions(path + 'history.database') // Generates a dict with a key for each session file
+
+    for (const key in sessions) { // Iterates over sessions
         if (sessions.hasOwnProperty(key)) {
-            const element = sessions[key];
-            const session = sessions[key]
-            console.log(await getSessionSongs(path + 'Sessions/' + session + '.session'))
+            const session = sessions[key]; // Get file name of session
+            const songlist = await getSessionSongs(path + 'Sessions/' + session + '.session') // Get an array of all songs in this file
+            console.log(songlist) // Print
         }
     }
 }
@@ -32,6 +34,8 @@ read()
 ```
 
 ## Development
+Git: [https://github.com/TobiasJacob/seratolibraryparser](https://github.com/TobiasJacob/seratolibraryparser)
+
 Feel free to contribute to this package. Clone this repository, run `npm install` and `npm run demo` to get started. Don't forget to adjust the `path` variable. 
 
 ## Dom structure of serato files
