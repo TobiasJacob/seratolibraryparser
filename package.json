@@ -1,6 +1,6 @@
 {
   "name": "seratolibraryparser",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Helps parsing serato DJ libraries for node.js based applications.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -34,5 +34,9 @@
     "tslint-config-prettier": "^1.18.0",
     "typescript": "^3.7.4"
   },
-  "keywords": ["Serato", "DJ", "Scratch", "Live"]
+  "keywords": ["Serato", "DJ", "Scratch", "Live"],
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/TobiasJacob/seratolibraryparser"
+  }
 }
