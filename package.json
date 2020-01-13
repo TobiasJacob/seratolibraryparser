@@ -1,0 +1,30 @@
+{
+  "name": "seratoscratchreader",
+  "version": "1.0.0",
+  "description": "Helps parsing serato libraries for node",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib /**/ * "
+  ],
+  "scripts": {
+    "build": "tsc",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
+    "test": "jest --config jestconfig.json",
+    "parseFile": "ts-node ./src/historyReader.ts"
+  },
+  "author": "Tobias Jacob",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^24.0.25",
+    "@types/node": "^13.1.6",
+    "jest": "^24.9.0",
+    "prettier": "^1.19.1",
+    "ts-jest": "^24.3.0",
+    "ts-node": "^8.6.1",
+    "tslint": "^5.20.1",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.7.4"
+  }
+}
