@@ -1,5 +1,5 @@
 {
-  "name": "seratoscratchreader",
+  "name": "seratolibraryparser",
   "version": "1.0.0",
   "description": "Helps parsing serato DJ libraries for node.js based applications.",
   "main": "lib/index.js",
@@ -13,7 +13,7 @@
     "lint": "tslint -p tsconfig.json",
     "test": "jest --config jestconfig.json",
 
-    "parseFile": "ts-node ./src/historyReader.ts",
+    "demo": "ts-node ./src/demo.ts",
 
     "prepare" : "npm run build",
     "prepublishOnly" : "npm test && npm run lint",

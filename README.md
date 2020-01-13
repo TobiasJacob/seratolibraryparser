@@ -1,7 +1,40 @@
 # Simple Serato DJ / Scratch Library Parser
 This simple serato DJ Library Parser is dependency free, supports typescript and helps parsing serato history files. Serato history files are saved in a very simple format. They consist of a DOM-like structure, where every node begins with a four byte id, the four byte length and afterwards following the content of the node. The content is a array of nodes, a 4 byte integer or a unicode string.
 
-## Dom structure
+## Usage
+Install it via
+
+```
+npm install seratolibraryparser
+```
+
+Then use it like
+
+```
+import {getDomTree, getSessions, getSessionSongs} from 'seratolibraryparser'
+
+const path = '/Users/tobiasjacob/Music/_Serato_/History/'
+async function read() {
+    console.log(await getDomTree(path + 'history.database'))
+    const sessions = await getSessions(path + 'history.database')
+
+    for (const key in sessions) {
+        if (sessions.hasOwnProperty(key)) {
+            const element = sessions[key];
+            const session = sessions[key]
+            console.log(await getSessionSongs(path + 'Sessions/' + session + '.session'))
+        }
+    }
+}
+
+read()
+
+```
+
+## Development
+Feel free to contribute to this package. Clone this repository, run `npm install` and `npm run demo` to get started. Don't forget to adjust the `path` variable. 
+
+## Dom structure of serato files
 `history.database` is the main file of serato history data
 - `vrsn` (8 + 60): String containing the version
 - `ocol` (8 + 24):

@@ -2,6 +2,9 @@ import * as fs from 'fs';
 
 type ChunkDataType = string | Chunk | Chunk[] | number;
 
+/**
+ * Datastructure for saving Dom Objects
+ */
 class Chunk {
   public data?: ChunkDataType;
   public length: number = 0;
@@ -14,37 +17,51 @@ class Chunk {
   }
 }
 
+/**
+ * Converts a 4 byte string into a integer
+ * @param s 4 byte string to be converted
+ */
 export function getUInt32FromString(s: string) {
   return (s.charCodeAt(0) << 24) + (s.charCodeAt(1) << 16) + (s.charCodeAt(2) << 8) + s.charCodeAt(3);
 }
 
+/**
+ * Converts a 4 byte integer into a string
+ * @param n 4 byte integer
+ */
 export function getStringFromUInt32(n: number) {
   return String.fromCharCode(Math.floor(n / (1 << 24)) % 256) + String.fromCharCode(Math.floor(n / (1 << 16)) % 256) + String.fromCharCode(Math.floor(n / (1 << 8)) % 256) + String.fromCharCode(Math.floor(n) % 256);
 }
 
+/**
+ * Returns a single buffer and fills in data tag recursivly
+ * @param buffer A node.js fs buffer to read from
+ * @param index index of first byte
+ * @returns Promise with {chunk, newIndex} object for destructured assignment. New Index is the index of the following chunk
+ */
 async function parseChunk(buffer: Buffer, index: number): Promise<{ chunk: Chunk, newIndex: number }> {
   const tag = getStringFromUInt32(buffer.readUInt32BE(index));
   const length = buffer.readUInt32BE(index + 4);
   let data;
   switch (tag) {
-    case 'vrsn':
+    case 'vrsn': // Version tag
       data = buffer.toString('utf8', index + 8, index + 8 + length).replace(/\0/g, '');
       break;
-    case 'oses':
+    case 'oses': // Structure containing a adat session object
       const { chunk : chunkOses } = await parseChunk(buffer, index + 8);
       data = chunkOses
       break;
-    case 'oent':
+    case 'oent': // Structure containing a adat song object
       const { chunk : chunkOent } = await parseChunk(buffer, index + 8);
       data = chunkOent
       break;
-    case 'adat':
+    case 'adat': // Strcuture containg an array of chunks 
       data = await parseChunkArray(buffer, index + 8, index + 8 + length);
       break;
     default:
-      if (length === 4) {
+      if (length === 4) { // Assume it's a integer if it has length 4
         data = buffer.readUInt32BE(index + 8);
-      } else {
+      } else { // Otherwise assume a string
         data = buffer.toString('utf8', index + 8, index + 8 + length).replace(/\0/g, '');
       }
       break;
@@ -55,6 +72,13 @@ async function parseChunk(buffer: Buffer, index: number): Promise<{ chunk: Chunk
   }
 }
 
+/**
+ * Reads in a ongoing list of serato chunks till the maximum length is reached
+ * @param buffer A node.js fs buffer to read from
+ * @param start Index of the first byte of the chunk
+ * @param end Maximum length of the array data
+ * @returns Array of chunks read in
+ */
 async function parseChunkArray(buffer: Buffer, start: number, end: number): Promise<Chunk[]> {
   const chunks = []
   let cursor = start
@@ -66,6 +90,23 @@ async function parseChunkArray(buffer: Buffer, start: number, end: number): Prom
   return chunks
 }
 
+/**
+ * Returns the raw domtree of a serato file
+ * @param path The path to the file that shoud be parsed
+ * @returns Nested object dom
+ */
+export async function getDomTree(path: string): Promise<Chunk[]> {
+  const buffer = await fs.promises.readFile(path);
+  const chunks = await parseChunkArray(buffer, 0, buffer.length);
+
+  return chunks;
+}
+
+/**
+ * Reads in a history.databases file  
+ * @param path Path to the history.database file
+ * @returns A dictonary with the number of the session file for every date
+ */
 export async function getSessions(path : string): Promise<{[Key: string]: number}> {
   const buffer = await fs.promises.readFile(path);
   const chunks = await parseChunkArray(buffer, 0, buffer.length);
@@ -95,6 +136,11 @@ export async function getSessions(path : string): Promise<{[Key: string]: number
   return sessions;
 }
 
+/**
+ * Reads in a serato session file.
+ * @param path Path to *.session file
+ * @returns An array containing title and artist for every song played
+ */
 export async function getSessionSongs(path: string) : Promise<Array<{title: string, artist : string}>> {
   const buffer = await fs.promises.readFile(path);
   const chunks = await parseChunkArray(buffer, 0, buffer.length);
