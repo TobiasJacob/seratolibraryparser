@@ -8,7 +8,17 @@ Install it via
 npm install seratolibraryparser
 ```
 
-Then adjust path and use it like
+It offers three functions
+
+```javascript
+import {getDomTree, getSessions, getSessionSongs} from 'seratolibraryparser'
+
+console.log(await getDomTree('/Users/tobiasjacob/Music/_Serato_/History/history.database')) // Parses a whole dom tree, just for demo purposes, if you want to analyze other tags
+console.log(await getSessions('/Users/tobiasjacob/Music/_Serato_/History/history.database')) // Prints a dict with a key for each session file
+console.log(await getSessionSongs('/Users/tobiasjacob/Music/_Serato_/History/Sessions/41.session')) // Prints all songs in this file
+```
+
+This is a example script which prints every song ever played. Don't forget do adjust path.
 
 ```javascript
 import {getDomTree, getSessions, getSessionSongs} from 'seratolibraryparser'
