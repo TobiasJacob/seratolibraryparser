@@ -1,6 +1,6 @@
 {
   "name": "seratolibraryparser",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Helps parsing serato DJ libraries for node.js based applications.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
