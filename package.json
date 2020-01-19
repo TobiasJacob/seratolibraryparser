@@ -12,7 +12,7 @@
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json",
     "test": "jest --config jestconfig.json",
-    "docs": "jsdoc ./lib -d docs",
+    "docs": "jsdoc ./lib README.md -d docs",
     "demo": "ts-node ./src/demo.ts",
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run lint",

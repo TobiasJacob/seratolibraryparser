@@ -28,7 +28,7 @@ read()
 
 ## Documentation
 
-[Checkout this](./docs/index.html)
+[https://tobiasjacob.github.io/seratolibraryparser/index.html](https://tobiasjacob.github.io/seratolibraryparser/index.html)
 
 ## Development
 

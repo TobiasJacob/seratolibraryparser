@@ -75,7 +75,7 @@ export function getStringFromUInt32(n: number) {
  * Returns a single buffer and fills in data tag recursivly
  * @param {Buffer} buffer A node.js fs buffer to read from
  * @param {number} index index of first byte
- * @returns {Promise} Promise with object for destructured assignment. New Index is the index of the following chunk
+ * @returns {Promise<{ chunk: Chunk; newIndex: number }>} Promise with object for destructured assignment. New Index is the index of the following chunk
  */
 async function parseChunk(
   buffer: Buffer,
@@ -111,7 +111,7 @@ async function parseChunk(
  * @param {Buffer} buffer A node.js fs buffer to read from
  * @param {number} start Index of the first byte of the chunk
  * @param {number} end Maximum length of the array data
- * @returns {Promise} Array of chunks read in
+ * @returns {Promise<Chunk[]>} Array of chunks read in
  */
 async function parseChunkArray(
   buffer: Buffer,
@@ -143,7 +143,7 @@ export async function getDomTree(path: string): Promise<Chunk[]> {
 /**
  * Reads in a history.databases file
  * @param {string} path Path to the history.database file
- * @returns {Promise} A dictonary with the number of the session file for every date
+ * @returns {Promise<{ [Key: string]: number }>} A dictonary with the number of the session file for every date
  */
 export async function getSessions(
   path: string
@@ -179,7 +179,7 @@ export async function getSessions(
 /**
  * Reads in a serato session file.
  * @param {string} path Path to *.session file
- * @returns {Promise} An array containing title and artist for every song played
+ * @returns {Promise<SessionSong[]>} An array containing title and artist for every song played
  */
 export async function getSessionSongs(
   path: string
@@ -256,7 +256,7 @@ export async function getSeratoSongs(path: string) {
 /**
  * Reads all sessions and played songs from the _Serato_ folder
  * @param {string} seratoPath path to _Serato_ folder (including _Serato_)
- * @returns {Promise} list of sessions including songs
+ * @returns {Promise<Session[]>} list of sessions including songs
  */
 export async function getSeratoHistory(seratoPath: string): Promise<Session[]> {
   const sessions = await getSessions(path.join(seratoPath, 'History/history.database'))
