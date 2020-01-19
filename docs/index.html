@@ -74,7 +74,20 @@
 				<p>Install it via</p>
 				<pre><code class="language-console">npm install seratolibraryparser</code></pre>
 				<p>It offers several functions</p>
-				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> { getSeratoHistory, getSeratoSongs, getDefaultSeratoPath} <span class="hljs-keyword">from</span> <span class="hljs-string">"./index"</span>;
+				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> { getSeratoHistory, getSeratoSongs, getDefaultSeratoPath} <span class="hljs-keyword">from</span> <span class="hljs-string">"seratolibraryparser"</span>;
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">read</span>(<span class="hljs-params"></span>) </span>{ <span class="hljs-comment">// ES6 function to read in all history files of a user</span>
+    <span class="hljs-keyword">const</span> path = getDefaultSeratoPath() <span class="hljs-comment">// gets default serato path</span>
+
+    <span class="hljs-keyword">const</span> databaseSongs = <span class="hljs-keyword">await</span> getSeratoSongs(path + <span class="hljs-string">'database V2'</span>) <span class="hljs-comment">// Gets array of songs</span>
+    <span class="hljs-built_in">console</span>.log(databaseSongs) <span class="hljs-comment">// Displays whole data tree parsed out of serato files</span>
+
+    <span class="hljs-keyword">const</span> wholeHistory = <span class="hljs-keyword">await</span> getSeratoHistory(path) <span class="hljs-comment">// Reads in all songs ever played</span>
+    <span class="hljs-built_in">console</span>.log(wholeHistory) <span class="hljs-comment">// Prints them</span>
+}
+
+read()
+
 
 <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">read</span>(<span class="hljs-params"></span>) </span>{ <span class="hljs-comment">// ES6 function to read in all history files of a user</span>
     <span class="hljs-keyword">const</span> path = getDefaultSeratoPath() <span class="hljs-comment">// gets default serato path</span>
