@@ -12,7 +12,7 @@
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json",
     "test": "jest --config jestconfig.json",
-    "docs": "jsdoc ./lib README.md -d docs",
+    "docs": "typedoc --mode file --out docs src/index.ts",
     "demo": "ts-node ./src/demo.ts",
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run lint",
@@ -26,12 +26,12 @@
     "@types/jest": "^24.0.25",
     "@types/node": "^13.1.6",
     "jest": "^24.9.0",
-    "jsdoc": "^3.6.3",
     "prettier": "^1.19.1",
     "ts-jest": "^24.3.0",
     "ts-node": "^8.6.1",
     "tslint": "^5.20.1",
     "tslint-config-prettier": "^1.18.0",
+    "typedoc": "^0.17.0-0",
     "typescript": "^3.7.4"
   },
   "keywords": [

@@ -3,17 +3,17 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>seratolibraryparser</title>
+	<title>DatabaseSong | seratolibraryparser</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="assets/css/main.css">
+	<link rel="stylesheet" href="../assets/css/main.css">
 </head>
 <body>
 <header>
 	<div class="tsd-page-toolbar">
 		<div class="container">
 			<div class="table-wrap">
-				<div class="table-cell" id="tsd-search" data-index="assets/js/search.js" data-base=".">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.js" data-base="..">
 					<div class="field">
 						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
 						<input id="tsd-search-field" type="text" />
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">seratolibraryparser</a>
+					<a href="../index.html" class="title">seratolibraryparser</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -53,143 +53,166 @@
 		<div class="container">
 			<ul class="tsd-breadcrumb">
 				<li>
-					<a href="globals.html">Globals</a>
+					<a href="../globals.html">Globals</a>
+				</li>
+				<li>
+					<a href="databasesong.html">DatabaseSong</a>
 				</li>
 			</ul>
-			<h1>seratolibraryparser</h1>
+			<h1>Interface DatabaseSong</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<div class="tsd-panel tsd-typography">
-				<a href="#simple-serato-dj--scratch-library-parser" id="simple-serato-dj--scratch-library-parser" style="color: inherit; text-decoration: none;">
-					<h1>Simple Serato DJ / Scratch Library Parser</h1>
-				</a>
-				<p>This simple serato DJ Library Parser is dependency free, supports typescript and helps parsing serato history files. Serato history files are saved in a very simple format. They consist of a DOM-like structure, where every node begins with a four byte id, the four byte length and afterwards following the content of the node. The content is a array of nodes, a 4 byte integer or a unicode string.</p>
-				<a href="#usage" id="usage" style="color: inherit; text-decoration: none;">
-					<h2>Usage</h2>
-				</a>
-				<p>Install it via</p>
-				<pre><code>npm <span class="hljs-keyword">install</span> seratolibraryparser</code></pre><p>It offers several functions</p>
-				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> { getSeratoHistory, getSeratoSongs, getDefaultSeratoPath} <span class="hljs-keyword">from</span> <span class="hljs-string">"./index"</span>;
-
-<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">read</span>(<span class="hljs-params"></span>) </span>{ <span class="hljs-comment">// ES6 function to read in all history files of a user</span>
-    <span class="hljs-keyword">const</span> path = getDefaultSeratoPath() <span class="hljs-comment">// gets default serato path </span>
-
-    <span class="hljs-keyword">const</span> databaseSongs = <span class="hljs-keyword">await</span> getSeratoSongs(path + <span class="hljs-string">'database V2'</span>) <span class="hljs-comment">// Gets array of songs</span>
-    <span class="hljs-built_in">console</span>.log(databaseSongs) <span class="hljs-comment">// Displays whole data tree parsed out of serato files</span>
-
-    <span class="hljs-keyword">const</span> wholeHistory = <span class="hljs-keyword">await</span> getSeratoHistory(path) <span class="hljs-comment">// Reads in all songs ever played</span>
-    <span class="hljs-built_in">console</span>.log(wholeHistory) <span class="hljs-comment">// Prints them</span>
-}
-
-read()</code></pre>
-				<a href="#documentation" id="documentation" style="color: inherit; text-decoration: none;">
-					<h2>Documentation</h2>
-				</a>
-				<p><a href="https://tobiasjacob.github.io/seratolibraryparser/index.html">https://tobiasjacob.github.io/seratolibraryparser/index.html</a></p>
-				<a href="#development" id="development" style="color: inherit; text-decoration: none;">
-					<h2>Development</h2>
-				</a>
-				<p>Feel free to contribute to this package. Clone this repository, run <code>npm install</code> and <code>npm run demo</code> to get started. Don&#39;t forget to adjust the <code>path</code> variable. </p>
-				<a href="#dom-structure-of-serato-files" id="dom-structure-of-serato-files" style="color: inherit; text-decoration: none;">
-					<h2>Dom structure of serato files</h2>
-				</a>
-				<p><code>history.database</code> is the main file of serato history data</p>
-				<ul>
-					<li><code>vrsn</code> (8 + 60): String containing the version</li>
-					<li><code>ocol</code> (8 + 24):<ul>
-							<li><code>ocok</code> (8 + 2): Maybe something with sorting?</li>
-							<li><code>ucow</code> (8 + 2): Maybe col width?</li>
-						</ul>
-					</li>
-					<li><code>oses</code> (8 + ?):<ul>
-							<li><code>adat</code> (8 + ?): <ul>
-									<li><code>\u0000\u0000\u0000\u0001</code> (8 + 4): id of the associated session file</li>
-									<li><code>\u0000\u0000\u0000)</code> (8 + 18): date of playlist as string</li>
-									<li><code>\u0000\u0000\u00009</code> (8 + ?): hardware used as string</li>
-									<li>...</li>
-								</ul>
-							</li>
-						</ul>
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>Interface for song data in library</p>
+					</div>
+				</div>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">DatabaseSong</span>
 					</li>
 				</ul>
-				<p><code>Sessions/*.session</code> stores session data of songs played after each other</p>
-				<ul>
-					<li><code>vrsn</code> (8 + 60): String containing the version</li>
-					<li><code>oent</code> (8 + ?):<ul>
-							<li><code>adat</code> (8 + ?): <ul>
-									<li><code>\u0000\u0000\u0000\u0006</code> (8 + ?): Title field of mp3</li>
-									<li><code>\u0000\u0000\u0000\u0007</code> (8 + ?): Artist field of mp3</li>
-									<li><code>\u0000\u0000\u0000\t</code> (8 + ?): Genre field of mp3</li>
-									<li><code>\u0000\u0000\u0000\u0017</code> (8 + ?): Year field of mp3</li>
-									<li><code>\u0000\u0000\u0000\u0003</code> (8 + ?): Key</li>
-									<li><code>\u0000\u0000\u0000\b</code> (8 + ?): Album</li>
-									<li><code>\u0000\u0000\u0000\u0002</code> (8 + ?): File Path</li>
-									<li>...</li>
-								</ul>
-							</li>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section tsd-is-external">
+							<h3>Properties</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="databasesong.html#artist" class="tsd-kind-icon">artist</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="databasesong.html#bpm" class="tsd-kind-icon">bpm</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="databasesong.html#key" class="tsd-kind-icon">key</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="databasesong.html#title" class="tsd-kind-icon">title</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+					<a name="artist" class="tsd-anchor"></a>
+					<h3>artist</h3>
+					<div class="tsd-signature tsd-kind-icon">artist<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/TobiasJacob/seratolibraryparser/blob/d19a1bb/src/historyReader.ts#L35">historyReader.ts:35</a></li>
 						</ul>
-					</li>
-				</ul>
-			</div>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+					<a name="bpm" class="tsd-anchor"></a>
+					<h3>bpm</h3>
+					<div class="tsd-signature tsd-kind-icon">bpm<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/TobiasJacob/seratolibraryparser/blob/d19a1bb/src/historyReader.ts#L36">historyReader.ts:36</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+					<a name="key" class="tsd-anchor"></a>
+					<h3>key</h3>
+					<div class="tsd-signature tsd-kind-icon">key<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/TobiasJacob/seratolibraryparser/blob/d19a1bb/src/historyReader.ts#L37">historyReader.ts:37</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+					<a name="title" class="tsd-anchor"></a>
+					<h3>title</h3>
+					<div class="tsd-signature tsd-kind-icon">title<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/TobiasJacob/seratolibraryparser/blob/d19a1bb/src/historyReader.ts#L34">historyReader.ts:34</a></li>
+						</ul>
+					</aside>
+				</section>
+			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
 				<ul>
 					<li class="globals  ">
-						<a href="globals.html"><em>Globals</em></a>
+						<a href="../globals.html"><em>Globals</em></a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-class tsd-is-external">
-						<a href="classes/chunk.html" class="tsd-kind-icon">Chunk</a>
+						<a href="../classes/chunk.html" class="tsd-kind-icon">Chunk</a>
+					</li>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-is-external">
+						<a href="databasesong.html" class="tsd-kind-icon">Database<wbr>Song</a>
+						<ul>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+								<a href="databasesong.html#artist" class="tsd-kind-icon">artist</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+								<a href="databasesong.html#bpm" class="tsd-kind-icon">bpm</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+								<a href="databasesong.html#key" class="tsd-kind-icon">key</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+								<a href="databasesong.html#title" class="tsd-kind-icon">title</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="session.html" class="tsd-kind-icon">Session</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-is-external">
-						<a href="interfaces/databasesong.html" class="tsd-kind-icon">Database<wbr>Song</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-is-external">
-						<a href="interfaces/session.html" class="tsd-kind-icon">Session</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-is-external">
-						<a href="interfaces/sessionsong.html" class="tsd-kind-icon">Session<wbr>Song</a>
+						<a href="sessionsong.html" class="tsd-kind-icon">Session<wbr>Song</a>
 					</li>
 					<li class=" tsd-kind-type-alias tsd-is-external">
-						<a href="globals.html#chunkdatatype" class="tsd-kind-icon">Chunk<wbr>Data<wbr>Type</a>
+						<a href="../globals.html#chunkdatatype" class="tsd-kind-icon">Chunk<wbr>Data<wbr>Type</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
-						<a href="globals.html#getdefaultseratopath" class="tsd-kind-icon">get<wbr>Default<wbr>Serato<wbr>Path</a>
+						<a href="../globals.html#getdefaultseratopath" class="tsd-kind-icon">get<wbr>Default<wbr>Serato<wbr>Path</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
-						<a href="globals.html#getdomtree" class="tsd-kind-icon">get<wbr>Dom<wbr>Tree</a>
+						<a href="../globals.html#getdomtree" class="tsd-kind-icon">get<wbr>Dom<wbr>Tree</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
-						<a href="globals.html#getseratohistory" class="tsd-kind-icon">get<wbr>Serato<wbr>History</a>
+						<a href="../globals.html#getseratohistory" class="tsd-kind-icon">get<wbr>Serato<wbr>History</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
-						<a href="globals.html#getseratosongs" class="tsd-kind-icon">get<wbr>Serato<wbr>Songs</a>
+						<a href="../globals.html#getseratosongs" class="tsd-kind-icon">get<wbr>Serato<wbr>Songs</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
-						<a href="globals.html#getsessionsongs" class="tsd-kind-icon">get<wbr>Session<wbr>Songs</a>
+						<a href="../globals.html#getsessionsongs" class="tsd-kind-icon">get<wbr>Session<wbr>Songs</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
-						<a href="globals.html#getsessions" class="tsd-kind-icon">get<wbr>Sessions</a>
+						<a href="../globals.html#getsessions" class="tsd-kind-icon">get<wbr>Sessions</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
-						<a href="globals.html#getstringfromuint32" class="tsd-kind-icon">get<wbr>String<wbr>FromUInt32</a>
+						<a href="../globals.html#getstringfromuint32" class="tsd-kind-icon">get<wbr>String<wbr>FromUInt32</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
-						<a href="globals.html#getuint32fromstring" class="tsd-kind-icon">getUInt32<wbr>From<wbr>String</a>
+						<a href="../globals.html#getuint32fromstring" class="tsd-kind-icon">getUInt32<wbr>From<wbr>String</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
-						<a href="globals.html#parsechunk" class="tsd-kind-icon">parse<wbr>Chunk</a>
+						<a href="../globals.html#parsechunk" class="tsd-kind-icon">parse<wbr>Chunk</a>
 					</li>
 					<li class=" tsd-kind-function tsd-is-external">
-						<a href="globals.html#parsechunkarray" class="tsd-kind-icon">parse<wbr>Chunk<wbr>Array</a>
+						<a href="../globals.html#parsechunkarray" class="tsd-kind-icon">parse<wbr>Chunk<wbr>Array</a>
 					</li>
 				</ul>
 			</nav>
@@ -260,7 +283,7 @@ read()</code></pre>
 	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
 </div>
 <div class="overlay"></div>
-<script src="assets/js/main.js"></script>
-<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+<script src="../assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>
 </body>
 </html>
