@@ -8,40 +8,27 @@ Install it via
 npm install seratolibraryparser
 ```
 
-It offers three functions
+It offers several functions
 
 ```javascript
-import {getDomTree, getSessions, getSessionSongs} from 'seratolibraryparser'
-
-console.log(await getDomTree('/Users/tobiasjacob/Music/_Serato_/History/history.database')) // Parses a whole dom tree, just for demo purposes, if you want to analyze other tags
-console.log(await getSessions('/Users/tobiasjacob/Music/_Serato_/History/history.database')) // Prints a dict with a key for each session file
-console.log(await getSessionSongs('/Users/tobiasjacob/Music/_Serato_/History/Sessions/41.session')) // Prints all songs in this file
-```
-
-This is a example script which prints every song ever played. Don't forget do adjust path.
-
-```javascript
-import {getDomTree, getSessions, getSessionSongs} from 'seratolibraryparser'
-
-const path = '/Users/tobiasjacob/Music/_Serato_/History/' // Adjust this path 
+import { getSeratoHistory, getSeratoSongs, getDefaultSeratoPath} from "./index";
 
 async function read() { // ES6 function to read in all history files of a user
-    const completeDomTree = await getDomTree(path + 'history.database') // Parses a whole dom tree, just for demo purposes, if you want to analyze other tags
-    console.log(completeDomTree) // Displays whole data tree parsed out of serato files
+    const path = getDefaultSeratoPath() // gets default serato path 
 
-    const sessions = await getSessions(path + 'history.database') // Generates a dict with a key for each session file
+    const databaseSongs = await getSeratoSongs(path + 'database V2') // Gets array of songs
+    console.log(databaseSongs) // Displays whole data tree parsed out of serato files
 
-    for (const key in sessions) { // Iterates over sessions
-        if (sessions.hasOwnProperty(key)) {
-            const session = sessions[key]; // Get file name of session
-            const songlist = await getSessionSongs(path + 'Sessions/' + session + '.session') // Get an array of all songs in this file
-            console.log(songlist) // Print
-        }
-    }
+    const wholeHistory = await getSeratoHistory(path) // Reads in all songs ever played
+    console.log(wholeHistory) // Prints them
 }
 
 read()
 ```
+
+## Documentation
+
+[Checkout this](./docs/index.html)
 
 ## Development
 

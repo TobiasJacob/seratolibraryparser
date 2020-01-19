@@ -1,6 +1,8 @@
 import * as fs from "fs";
+import * as path from "path";
+import * as os from "os";
 
-type ChunkDataType = string | Chunk | Chunk[] | number;
+type ChunkDataType = string | Chunk[] | number;
 
 /**
  * Datastructure for saving Dom Objects
@@ -18,8 +20,34 @@ class Chunk {
 }
 
 /**
+ * Interface for song data in sessions
+ */
+export interface SessionSong {
+  title: string,
+  artist: string
+}
+
+/**
+ * Interface for song data in library
+ */
+export interface DatabaseSong {
+  title: string,
+  artist: string,
+  bpm: number | undefined,
+  key: string | undefined
+}
+
+/**
+ * Interface for session data
+ */
+export interface Session {
+  date: string,
+  songs: SessionSong[]
+}
+
+/**
  * Converts a 4 byte string into a integer
- * @param s 4 byte string to be converted
+ * @param {string} s 4 byte string to be converted
  */
 export function getUInt32FromString(s: string) {
   return (
@@ -32,7 +60,7 @@ export function getUInt32FromString(s: string) {
 
 /**
  * Converts a 4 byte integer into a string
- * @param n 4 byte integer
+ * @param {number} n 4 byte integer
  */
 export function getStringFromUInt32(n: number) {
   return (
@@ -45,9 +73,9 @@ export function getStringFromUInt32(n: number) {
 
 /**
  * Returns a single buffer and fills in data tag recursivly
- * @param buffer A node.js fs buffer to read from
- * @param index index of first byte
- * @returns Promise with {chunk, newIndex} object for destructured assignment. New Index is the index of the following chunk
+ * @param {Buffer} buffer A node.js fs buffer to read from
+ * @param {number} index index of first byte
+ * @returns {Promise} Promise with object for destructured assignment. New Index is the index of the following chunk
  */
 async function parseChunk(
   buffer: Buffer,
@@ -57,32 +85,19 @@ async function parseChunk(
   const length = buffer.readUInt32BE(index + 4);
   let data;
   switch (tag) {
-    case "vrsn": // Version tag
-      data = buffer
-        .toString("utf8", index + 8, index + 8 + length)
-        .replace(/\0/g, "");
-      break;
     case "oses": // Structure containing a adat session object
-      const { chunk: chunkOses } = await parseChunk(buffer, index + 8);
-      data = chunkOses;
-      break;
     case "oent": // Structure containing a adat song object
-      const { chunk: chunkOent } = await parseChunk(buffer, index + 8);
-      data = chunkOent;
-      break;
+    case "otrk": // Structure containing a ttyp song object
     case "adat": // Strcuture containg an array of chunks
       data = await parseChunkArray(buffer, index + 8, index + 8 + length);
       break;
+    case "\u0000\u0000\u0000\u0001":
+      data = buffer.readUInt32BE(index + 8);
+      break;
     default:
-      if (length === 4) {
-        // Assume it's a integer if it has length 4
-        data = buffer.readUInt32BE(index + 8);
-      } else {
-        // Otherwise assume a string
-        data = buffer
-          .toString("utf8", index + 8, index + 8 + length)
-          .replace(/\0/g, "");
-      }
+      data = buffer
+        .toString("utf8", index + 8, index + 8 + length)
+        .replace(/\0/g, "");
       break;
   }
   return {
@@ -93,10 +108,10 @@ async function parseChunk(
 
 /**
  * Reads in a ongoing list of serato chunks till the maximum length is reached
- * @param buffer A node.js fs buffer to read from
- * @param start Index of the first byte of the chunk
- * @param end Maximum length of the array data
- * @returns Array of chunks read in
+ * @param {Buffer} buffer A node.js fs buffer to read from
+ * @param {number} start Index of the first byte of the chunk
+ * @param {number} end Maximum length of the array data
+ * @returns {Promise} Array of chunks read in
  */
 async function parseChunkArray(
   buffer: Buffer,
@@ -115,8 +130,8 @@ async function parseChunkArray(
 
 /**
  * Returns the raw domtree of a serato file
- * @param path The path to the file that shoud be parsed
- * @returns Nested object dom
+ * @param {string} path The path to the file that shoud be parsed
+ * @returns {Promise<Chunk[]>} Nested object dom
  */
 export async function getDomTree(path: string): Promise<Chunk[]> {
   const buffer = await fs.promises.readFile(path);
@@ -127,8 +142,8 @@ export async function getDomTree(path: string): Promise<Chunk[]> {
 
 /**
  * Reads in a history.databases file
- * @param path Path to the history.database file
- * @returns A dictonary with the number of the session file for every date
+ * @param {string} path Path to the history.database file
+ * @returns {Promise} A dictonary with the number of the session file for every date
  */
 export async function getSessions(
   path: string
@@ -139,12 +154,12 @@ export async function getSessions(
   const sessions: { [Key: string]: number } = {};
   chunks.forEach(chunk => {
     if (chunk.tag === "oses") {
-      if (chunk.data instanceof Chunk) {
-        if (chunk.data.tag === "adat") {
-          if (Array.isArray(chunk.data.data)) {
+      if (Array.isArray(chunk.data)) {
+        if (chunk.data[0].tag === "adat") {
+          if (Array.isArray(chunk.data[0].data)) {
             let date = "";
             let index = -1;
-            chunk.data.data.forEach(subChunk => {
+            chunk.data[0].data.forEach(subChunk => {
               if (subChunk.tag === "\u0000\u0000\u0000\u0001") {
                 index = subChunk.data as number;
               }
@@ -163,25 +178,25 @@ export async function getSessions(
 
 /**
  * Reads in a serato session file.
- * @param path Path to *.session file
- * @returns An array containing title and artist for every song played
+ * @param {string} path Path to *.session file
+ * @returns {Promise} An array containing title and artist for every song played
  */
 export async function getSessionSongs(
   path: string
-): Promise<Array<{ title: string; artist: string }>> {
+): Promise<SessionSong[]> {
   const buffer = await fs.promises.readFile(path);
   const chunks = await parseChunkArray(buffer, 0, buffer.length);
 
-  const songs: Array<{ title: string; artist: string }> = [];
+  const songs: SessionSong[] = [];
 
   chunks.forEach(chunk => {
     if (chunk.tag === "oent") {
-      if (chunk.data instanceof Chunk) {
-        if (chunk.data.tag === "adat") {
-          if (Array.isArray(chunk.data.data)) {
+      if (Array.isArray(chunk.data)) {
+        if (chunk.data[0].tag === "adat") {
+          if (Array.isArray(chunk.data[0].data)) {
             let title = "";
             let artist = "";
-            chunk.data.data.forEach(subChunk => {
+            chunk.data[0].data.forEach(subChunk => {
               if (subChunk.tag === "\u0000\u0000\u0000\u0006") {
                 title = subChunk.data as string;
               }
@@ -196,6 +211,73 @@ export async function getSessionSongs(
     }
   });
   return songs;
+}
+
+/**
+ * Gets all songs of the database v2 serato file
+ * @param {string} path path to database v2 serato file
+ */
+export async function getSeratoSongs(path: string) {
+  const buffer = await fs.promises.readFile(path);
+  const chunks = await parseChunkArray(buffer, 0, buffer.length);
+
+  const songs: DatabaseSong[] = [];
+
+  chunks.forEach(chunk => {
+    if (chunk.tag === "otrk") {
+      if (Array.isArray(chunk.data)) {
+        let title = "";
+        let artist = "";
+        let bpm;
+        let key;
+        chunk.data.forEach(subChunk => {
+          if (subChunk.tag === "tsng") {
+            title = subChunk.data as string;
+          }
+          if (subChunk.tag === "tart") {
+            artist = subChunk.data as string;
+          }
+          if (subChunk.tag === "tbpm") {
+            bpm = subChunk.data as string;
+          }
+          if (subChunk.tag === "tkey") {
+            key = subChunk.data as string;
+          }
+        });
+        songs.push({ title, artist, bpm, key });
+      }
+
+    }
+  });
+
+  return songs;
+}
+
+/**
+ * Reads all sessions and played songs from the _Serato_ folder
+ * @param {string} seratoPath path to _Serato_ folder (including _Serato_)
+ * @returns {Promise} list of sessions including songs
+ */
+export async function getSeratoHistory(seratoPath: string): Promise<Session[]> {
+  const sessions = await getSessions(path.join(seratoPath, 'History/history.database'))
+  const result: Session[] = []
+
+  for (const key in sessions) {
+    if (sessions.hasOwnProperty(key)) {
+      const session = sessions[key];
+      const songlist = await getSessionSongs(path.join(seratoPath, 'History/Sessions/', session + '.session'))
+      result.push({ date: key, songs: songlist })
+    }
+  }
+  return result;
+}
+
+/**
+ * Returns the default path to the _serato_ folder of the user
+ * @returns {string} path to _serato_ folder
+ */
+export function getDefaultSeratoPath(): string {
+  return path.join(os.homedir(), 'Music/_Serato_/');
 }
 
 // getSessionSongs('/Users/tobiasjacob/Music/_Serato_/History/Sessions/12.session'); // for testing
