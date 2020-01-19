@@ -1,6 +1,6 @@
 {
   "name": "seratolibraryparser",
-  "version": "1.0.4",
+  "version": "1.1.0",
   "description": "Helps parsing serato DJ libraries for node.js based applications.",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -15,7 +15,7 @@
     "docs": "typedoc --mode file --out docs src/index.ts",
     "demo": "ts-node ./src/demo.ts",
     "prepare": "npm run build",
-    "prepublishOnly": "npm test && npm run lint",
+    "prepublishOnly": "npm test && npm run lint && npm run docs",
     "preversion": "npm run lint",
     "version": "npm run format && git add -A src",
     "postversion": "git push && git push --tags"

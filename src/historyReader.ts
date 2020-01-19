@@ -1,6 +1,6 @@
 import * as fs from "fs";
-import * as path from "path";
 import * as os from "os";
+import * as pathLib from "path";
 
 type ChunkDataType = string | Chunk[] | number;
 
@@ -259,13 +259,13 @@ export async function getSeratoSongs(path: string) {
  * @returns {Promise<Session[]>} list of sessions including songs
  */
 export async function getSeratoHistory(seratoPath: string): Promise<Session[]> {
-  const sessions = await getSessions(path.join(seratoPath, 'History/history.database'))
+  const sessions = await getSessions(pathLib.join(seratoPath, 'History/history.database'))
   const result: Session[] = []
 
   for (const key in sessions) {
     if (sessions.hasOwnProperty(key)) {
       const session = sessions[key];
-      const songlist = await getSessionSongs(path.join(seratoPath, 'History/Sessions/', session + '.session'))
+      const songlist = await getSessionSongs(pathLib.join(seratoPath, 'History/Sessions/', session + '.session'))
       result.push({ date: key, songs: songlist })
     }
   }
@@ -277,7 +277,7 @@ export async function getSeratoHistory(seratoPath: string): Promise<Session[]> {
  * @returns {string} path to _serato_ folder
  */
 export function getDefaultSeratoPath(): string {
-  return path.join(os.homedir(), 'Music/_Serato_/');
+  return pathLib.join(os.homedir(), 'Music/_Serato_/');
 }
 
 // getSessionSongs('/Users/tobiasjacob/Music/_Serato_/History/Sessions/12.session'); // for testing

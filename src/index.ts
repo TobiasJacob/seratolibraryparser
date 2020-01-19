@@ -1,6 +1,6 @@
-import { getDomTree, getSessions, getSessionSongs, getSeratoHistory, getSeratoSongs, getDefaultSeratoPath } from "./historyReader";
+import { getDefaultSeratoPath, getDomTree, getSeratoHistory, getSeratoSongs, getSessions, getSessionSongs } from "./historyReader";
 
 /**
  * Forwards export functions
  */
-export { getDomTree, getSessions, getSessionSongs, getSeratoHistory, getSeratoSongs, getDefaultSeratoPath };
+export { getDefaultSeratoPath, getDomTree, getSeratoHistory, getSeratoSongs, getSessions, getSessionSongs };

@@ -1,4 +1,4 @@
-import { getSeratoHistory, getSeratoSongs, getDefaultSeratoPath} from "./index";
+import { getDefaultSeratoPath, getSeratoHistory, getSeratoSongs } from "./index";
 
 async function read() { // ES6 function to read in all history files of a user
     const path = getDefaultSeratoPath() // gets default serato path 
