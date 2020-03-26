@@ -1,4 +1,4 @@
-import { getDefaultSeratoPath, getSeratoHistory, getSeratoSongs } from "./index";
+import { getDefaultITunesLibraryPath, getDefaultSeratoPath, getITunesSongs, getSeratoHistory, getSeratoSongs } from "./index";
 
 async function read() { // ES6 function to read in all history files of a user
     const path = getDefaultSeratoPath() // gets default serato path 
@@ -8,6 +8,9 @@ async function read() { // ES6 function to read in all history files of a user
 
     const wholeHistory = await getSeratoHistory(path) // Reads in all songs ever played
     console.log(wholeHistory) // Prints them
+
+    const iTunesLibraray = await getITunesSongs(getDefaultITunesLibraryPath()) // Reads in all songs ever played
+    console.log(iTunesLibraray) // Prints them
 }
 
 read()

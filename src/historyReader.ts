@@ -22,19 +22,11 @@ class Chunk {
 /**
  * Interface for song data in sessions
  */
-export interface SessionSong {
-  title: string,
-  artist: string
-}
-
-/**
- * Interface for song data in library
- */
-export interface DatabaseSong {
+export interface Song {
   title: string,
   artist: string,
-  bpm: number | undefined,
-  key: string | undefined
+  filePath: string,
+  bpm: number | undefined
 }
 
 /**
@@ -42,7 +34,7 @@ export interface DatabaseSong {
  */
 export interface Session {
   date: string,
-  songs: SessionSong[]
+  songs: Song[]
 }
 
 /**
@@ -96,7 +88,7 @@ async function parseChunk(
       break;
     default:
       data = buffer
-        .toString("utf8", index + 8, index + 8 + length)
+        .toString("latin1", index + 8, index + 8 + length)
         .replace(/\0/g, "");
       break;
   }
@@ -183,11 +175,11 @@ export async function getSessions(
  */
 export async function getSessionSongs(
   path: string
-): Promise<SessionSong[]> {
+): Promise<Song[]> {
   const buffer = await fs.promises.readFile(path);
   const chunks = await parseChunkArray(buffer, 0, buffer.length);
 
-  const songs: SessionSong[] = [];
+  const songs: Song[] = [];
 
   chunks.forEach(chunk => {
     if (chunk.tag === "oent") {
@@ -196,6 +188,8 @@ export async function getSessionSongs(
           if (Array.isArray(chunk.data[0].data)) {
             let title = "";
             let artist = "";
+            let bpm = -1;
+            let filePath = "";
             chunk.data[0].data.forEach(subChunk => {
               if (subChunk.tag === "\u0000\u0000\u0000\u0006") {
                 title = subChunk.data as string;
@@ -203,8 +197,14 @@ export async function getSessionSongs(
               if (subChunk.tag === "\u0000\u0000\u0000\u0007") {
                 artist = subChunk.data as string;
               }
+              if (subChunk.tag === "tbpm") {
+                bpm = Number(subChunk.data as string);
+              }
+              if (subChunk.tag === "pfil") {
+                filePath = subChunk.data as string;
+              }
             });
-            songs.push({ title, artist });
+            songs.push({ title, artist, bpm, filePath });
           }
         }
       }
@@ -221,7 +221,7 @@ export async function getSeratoSongs(path: string) {
   const buffer = await fs.promises.readFile(path);
   const chunks = await parseChunkArray(buffer, 0, buffer.length);
 
-  const songs: DatabaseSong[] = [];
+  const songs: Song[] = [];
 
   chunks.forEach(chunk => {
     if (chunk.tag === "otrk") {
@@ -229,7 +229,7 @@ export async function getSeratoSongs(path: string) {
         let title = "";
         let artist = "";
         let bpm;
-        let key;
+        let filePath = "";
         chunk.data.forEach(subChunk => {
           if (subChunk.tag === "tsng") {
             title = subChunk.data as string;
@@ -240,11 +240,11 @@ export async function getSeratoSongs(path: string) {
           if (subChunk.tag === "tbpm") {
             bpm = subChunk.data as string;
           }
-          if (subChunk.tag === "tkey") {
-            key = subChunk.data as string;
+          if (subChunk.tag === "pfil") {
+            filePath = subChunk.data as string;
           }
         });
-        songs.push({ title, artist, bpm, key });
+        songs.push({ title, artist, bpm, filePath });
       }
 
     }

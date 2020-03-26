@@ -1,6 +1,6 @@
 # Simple Serato DJ / Scratch Library Parser
 
-This simple serato DJ Library Parser is dependency free, supports typescript and helps parsing serato history files. Serato history files are saved in a very simple format. They consist of a DOM-like structure, where every node begins with a four byte id, the four byte length and afterwards following the content of the node. The content is a array of nodes, a 4 byte integer or a unicode string.
+This simple serato DJ Library Parser supports typescript and helps parsing serato history files. Serato history files are saved in a very simple format. They consist of a DOM-like structure, where every node begins with a four byte id, the four byte length and afterwards following the content of the node. The content is a array of nodes, a 4 byte integer or a unicode string.
 
 ## Usage
 
