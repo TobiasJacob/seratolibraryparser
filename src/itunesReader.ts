@@ -31,8 +31,8 @@ export async function getITunesSongs(path: string) {
 
 
 /**
- * Returns the default path to the _serato_ folder of the user
- * @returns {string} path to _serato_ folder
+ * Returns the default path to the iTunes Music Library.xml of the user
+ * @returns {string} path to iTunes Music Library.xml
  */
 export function getDefaultITunesLibraryPath(): string {
     return pathLib.join(os.homedir(), 'Music/iTunes/iTunes Music Library.xml');
