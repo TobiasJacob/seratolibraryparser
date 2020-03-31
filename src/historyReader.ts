@@ -2,7 +2,7 @@ import * as fs from "fs";
 import * as os from "os";
 import * as pathLib from "path";
 
-type ChunkDataType = string | Chunk[] | number;
+type ChunkDataType = string | Chunk[] | number | Date;
 
 /**
  * Datastructure for saving Dom Objects
@@ -26,7 +26,13 @@ export interface Song {
   title: string,
   artist: string,
   filePath: string,
-  bpm: number | undefined
+  bpm: number | undefined,
+}
+/**
+ * Interface for song data in sessions
+ */
+export interface HistorySong extends Song {
+  timePlayed: Date,
 }
 
 /**
@@ -34,7 +40,7 @@ export interface Song {
  */
 export interface Session {
   date: string,
-  songs: Song[]
+  songs: HistorySong[]
 }
 
 /**
@@ -85,6 +91,11 @@ async function parseChunk(
       break;
     case "\u0000\u0000\u0000\u0001":
       data = buffer.readUInt32BE(index + 8);
+      break;
+    case "\u0000\u0000\u00005":
+      const secondsSince1970 = buffer.readUInt32BE(index + 8);
+      data = new Date(0);
+      data.setUTCSeconds(secondsSince1970);
       break;
     default:
       data = buffer
@@ -175,11 +186,11 @@ export async function getSessions(
  */
 export async function getSessionSongs(
   path: string
-): Promise<Song[]> {
+): Promise<HistorySong[]> {
   const buffer = await fs.promises.readFile(path);
   const chunks = await parseChunkArray(buffer, 0, buffer.length);
 
-  const songs: Song[] = [];
+  const songs: HistorySong[] = [];
 
   chunks.forEach(chunk => {
     if (chunk.tag === "oent") {
@@ -190,6 +201,7 @@ export async function getSessionSongs(
             let artist = "";
             let bpm = -1;
             let filePath = "";
+            let timePlayed = new Date();
             chunk.data[0].data.forEach(subChunk => {
               if (subChunk.tag === "\u0000\u0000\u0000\u0006") {
                 title = subChunk.data as string;
@@ -203,8 +215,12 @@ export async function getSessionSongs(
               if (subChunk.tag === "pfil") {
                 filePath = subChunk.data as string;
               }
+              if (subChunk.tag === "\u0000\u0000\u00005") {
+                timePlayed = subChunk.data as Date;
+              }
             });
-            songs.push({ title, artist, bpm, filePath });
+            // console.log(chunk.data[0].data); // For Development
+            songs.push({ title, artist, bpm, filePath, timePlayed });
           }
         }
       }

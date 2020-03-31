@@ -66,4 +66,6 @@ Feel free to contribute to this package. Clone this repository, run `npm install
     - `\u0000\u0000\u0000\u0003` (8 + ?): Key
     - `\u0000\u0000\u0000\b` (8 + ?): Album
     - `\u0000\u0000\u0000\u0002` (8 + ?): File Path
+    - `\u0000\u0000\u00005` (8 + 4): Timestamp when the song was played (seconds since 1970, UInt32)
+    - `\u0000\u0000\u0000-`(8 + 4): The duration of the time where the song was playing (in seconds, UInt32)
     - ...
