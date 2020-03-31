@@ -90,6 +90,7 @@ async function parseChunk(
       data = await parseChunkArray(buffer, index + 8, index + 8 + length);
       break;
     case "\u0000\u0000\u0000\u0001":
+    case "\u0000\u0000\u0000\u000f":
       data = buffer.readUInt32BE(index + 8);
       break;
     case "\u0000\u0000\u00005":
@@ -209,8 +210,8 @@ export async function getSessionSongs(
               if (subChunk.tag === "\u0000\u0000\u0000\u0007") {
                 artist = subChunk.data as string;
               }
-              if (subChunk.tag === "tbpm") {
-                bpm = Number(subChunk.data as string);
+              if (subChunk.tag === "\u0000\u0000\u0000\u000f") {
+                bpm = subChunk.data as number;
               }
               if (subChunk.tag === "pfil") {
                 filePath = subChunk.data as string;

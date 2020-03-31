@@ -7,7 +7,7 @@ async function read() { // ES6 function to read in all history files of a user
     console.log(databaseSongs) // Displays whole data tree parsed out of serato files
 
     const wholeHistory = await getSeratoHistory(path) // Reads in all songs ever played
-    console.log(wholeHistory) // Prints them
+    console.log(wholeHistory[0]) // Prints them
 
     const iTunesLibraray = await getITunesSongs(getDefaultITunesLibraryPath()) // Reads in all songs ever played
     console.log(iTunesLibraray) // Prints them
