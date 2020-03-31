@@ -16,7 +16,7 @@ It offers several functions
 import { getDefaultITunesLibraryPath, getDefaultSeratoPath, getITunesSongs, getSeratoHistory, getSeratoSongs } from "./index";
 
 async function read() { // ES6 function to read in all history files of a user
-    const path = getDefaultSeratoPath() // gets default serato path 
+    const path = getDefaultSeratoPath() // gets default serato path
 
     const databaseSongs = await getSeratoSongs(path + 'database V2') // Gets array of songs
     console.log(databaseSongs) // Displays whole data tree parsed out of serato files

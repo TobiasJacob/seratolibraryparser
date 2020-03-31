@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Session | seratolibraryparser</title>
+	<title>HistorySong | seratolibraryparser</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -56,10 +56,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="session.html">Session</a>
+					<a href="historysong.html">HistorySong</a>
 				</li>
 			</ul>
-			<h1>Interface Session</h1>
+			<h1>Interface HistorySong</h1>
 		</div>
 	</div>
 </header>
@@ -69,7 +69,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Interface for session data</p>
+						<p>Interface for song data in sessions</p>
 					</div>
 				</div>
 			</section>
@@ -77,7 +77,12 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">Session</span>
+						<a href="song.html" class="tsd-signature-type">Song</a>
+						<ul class="tsd-hierarchy">
+							<li>
+								<span class="target">HistorySong</span>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</section>
@@ -88,8 +93,11 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="session.html#date" class="tsd-kind-icon">date</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="session.html#songs" class="tsd-kind-icon">songs</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external"><a href="historysong.html#artist" class="tsd-kind-icon">artist</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external"><a href="historysong.html#bpm" class="tsd-kind-icon">bpm</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external"><a href="historysong.html#filepath" class="tsd-kind-icon">file<wbr>Path</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="historysong.html#timeplayed" class="tsd-kind-icon">time<wbr>Played</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external"><a href="historysong.html#title" class="tsd-kind-icon">title</a></li>
 							</ul>
 						</section>
 					</div>
@@ -97,23 +105,57 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-					<a name="date" class="tsd-anchor"></a>
-					<h3>date</h3>
-					<div class="tsd-signature tsd-kind-icon">date<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
+					<a name="artist" class="tsd-anchor"></a>
+					<h3>artist</h3>
+					<div class="tsd-signature tsd-kind-icon">artist<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
+						<p>Inherited from <a href="song.html">Song</a>.<a href="song.html#artist">artist</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/TobiasJacob/seratolibraryparser/blob/4b3f704/src/historyReader.ts#L42">historyReader.ts:42</a></li>
+							<li>Defined in <a href="https://github.com/TobiasJacob/seratolibraryparser/blob/4b3f704/src/historyReader.ts#L27">historyReader.ts:27</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
+					<a name="bpm" class="tsd-anchor"></a>
+					<h3>bpm</h3>
+					<div class="tsd-signature tsd-kind-icon">bpm<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="song.html">Song</a>.<a href="song.html#bpm">bpm</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/TobiasJacob/seratolibraryparser/blob/4b3f704/src/historyReader.ts#L29">historyReader.ts:29</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
+					<a name="filepath" class="tsd-anchor"></a>
+					<h3>file<wbr>Path</h3>
+					<div class="tsd-signature tsd-kind-icon">file<wbr>Path<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="song.html">Song</a>.<a href="song.html#filepath">filePath</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/TobiasJacob/seratolibraryparser/blob/4b3f704/src/historyReader.ts#L28">historyReader.ts:28</a></li>
 						</ul>
 					</aside>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-					<a name="songs" class="tsd-anchor"></a>
-					<h3>songs</h3>
-					<div class="tsd-signature tsd-kind-icon">songs<span class="tsd-signature-symbol">:</span> <a href="historysong.html" class="tsd-signature-type">HistorySong</a><span class="tsd-signature-symbol">[]</span></div>
+					<a name="timeplayed" class="tsd-anchor"></a>
+					<h3>time<wbr>Played</h3>
+					<div class="tsd-signature tsd-kind-icon">time<wbr>Played<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Date</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/TobiasJacob/seratolibraryparser/blob/4b3f704/src/historyReader.ts#L43">historyReader.ts:43</a></li>
+							<li>Defined in <a href="https://github.com/TobiasJacob/seratolibraryparser/blob/4b3f704/src/historyReader.ts#L35">historyReader.ts:35</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
+					<a name="title" class="tsd-anchor"></a>
+					<h3>title</h3>
+					<div class="tsd-signature tsd-kind-icon">title<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="song.html">Song</a>.<a href="song.html#title">title</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/TobiasJacob/seratolibraryparser/blob/4b3f704/src/historyReader.ts#L26">historyReader.ts:26</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -132,24 +174,33 @@
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="../classes/chunk.html" class="tsd-kind-icon">Chunk</a>
 					</li>
-					<li class=" tsd-kind-interface tsd-is-external">
-						<a href="historysong.html" class="tsd-kind-icon">History<wbr>Song</a>
-					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-is-external">
-						<a href="session.html" class="tsd-kind-icon">Session</a>
+						<a href="historysong.html" class="tsd-kind-icon">History<wbr>Song</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-								<a href="session.html#date" class="tsd-kind-icon">date</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
+								<a href="historysong.html#artist" class="tsd-kind-icon">artist</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
+								<a href="historysong.html#bpm" class="tsd-kind-icon">bpm</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
+								<a href="historysong.html#filepath" class="tsd-kind-icon">file<wbr>Path</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
-								<a href="session.html#songs" class="tsd-kind-icon">songs</a>
+								<a href="historysong.html#timeplayed" class="tsd-kind-icon">time<wbr>Played</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited tsd-is-external">
+								<a href="historysong.html#title" class="tsd-kind-icon">title</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="session.html" class="tsd-kind-icon">Session</a>
+					</li>
 					<li class=" tsd-kind-interface tsd-is-external">
 						<a href="song.html" class="tsd-kind-icon">Song</a>
 					</li>

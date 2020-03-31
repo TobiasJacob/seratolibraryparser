@@ -77,7 +77,7 @@
 				<pre><code class="language-javascript"><span class="hljs-keyword">import</span> { getDefaultITunesLibraryPath, getDefaultSeratoPath, getITunesSongs, getSeratoHistory, getSeratoSongs } <span class="hljs-keyword">from</span> <span class="hljs-string">"./index"</span>;
 
 <span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">read</span>(<span class="hljs-params"></span>) </span>{ <span class="hljs-comment">// ES6 function to read in all history files of a user</span>
-    <span class="hljs-keyword">const</span> path = getDefaultSeratoPath() <span class="hljs-comment">// gets default serato path </span>
+    <span class="hljs-keyword">const</span> path = getDefaultSeratoPath() <span class="hljs-comment">// gets default serato path</span>
 
     <span class="hljs-keyword">const</span> databaseSongs = <span class="hljs-keyword">await</span> getSeratoSongs(path + <span class="hljs-string">'database V2'</span>) <span class="hljs-comment">// Gets array of songs</span>
     <span class="hljs-built_in">console</span>.log(databaseSongs) <span class="hljs-comment">// Displays whole data tree parsed out of serato files</span>
@@ -132,6 +132,8 @@ read()</code></pre>
 									<li><code>\u0000\u0000\u0000\u0003</code> (8 + ?): Key</li>
 									<li><code>\u0000\u0000\u0000\b</code> (8 + ?): Album</li>
 									<li><code>\u0000\u0000\u0000\u0002</code> (8 + ?): File Path</li>
+									<li><code>\u0000\u0000\u00005</code> (8 + 4): Timestamp when the song was played (seconds since 1970, UInt32)</li>
+									<li><code>\u0000\u0000\u0000-</code>(8 + 4): The duration of the time where the song was playing (in seconds, UInt32)</li>
 									<li>...</li>
 								</ul>
 							</li>
@@ -152,6 +154,9 @@ read()</code></pre>
 				<ul class="before-current">
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="classes/chunk.html" class="tsd-kind-icon">Chunk</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="interfaces/historysong.html" class="tsd-kind-icon">History<wbr>Song</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-is-external">
 						<a href="interfaces/session.html" class="tsd-kind-icon">Session</a>
