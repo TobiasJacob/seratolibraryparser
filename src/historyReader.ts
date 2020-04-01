@@ -26,7 +26,7 @@ export interface Song {
   title: string,
   artist: string,
   filePath: string,
-  bpm: number | undefined,
+  bpm?: number,
 }
 /**
  * Interface for song data in sessions
@@ -200,7 +200,7 @@ export async function getSessionSongs(
           if (Array.isArray(chunk.data[0].data)) {
             let title = "";
             let artist = "";
-            let bpm = -1;
+            let bpm;
             let filePath = "";
             let timePlayed = new Date();
             chunk.data[0].data.forEach(subChunk => {

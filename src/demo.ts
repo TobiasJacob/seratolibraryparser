@@ -11,6 +11,10 @@ async function read() { // ES6 function to read in all history files of a user
 
     const iTunesLibraray = await getITunesSongs(getDefaultITunesLibraryPath()) // Reads in all songs ever played
     console.log(iTunesLibraray) // Prints them
+
+    // iTunesLibraray.forEach((s) => {
+    //     if (s.title.toLowerCase().includes("inf")) console.log(s)
+    // })
 }
 
 read()
