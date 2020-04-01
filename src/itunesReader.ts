@@ -19,9 +19,6 @@ export async function getITunesSongs(path: string) {
 
     Object.keys(iTunes.Tracks).forEach((key) => {
         const iTunesSong = iTunes.Tracks[key]
-        if (iTunesSong.Name?.toLowerCase().includes('infi')) {
-            console.log(iTunesSong);
-        }
         if (iTunesSong.Artist && iTunesSong.Name && iTunesSong.Location) {
             songs.push({ title: iTunesSong.Name, artist: iTunesSong.Artist, filePath: decodeURIComponent(iTunesSong.Location.substr(7)), bpm: iTunesSong.BPM ? Number(iTunesSong.BPM) : undefined });
         }
